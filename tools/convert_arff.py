@@ -21,7 +21,7 @@ class UnexpectedTokenException(Exception):
 
 
 class UnsupportedAttributeException(Exception):
-    """ Unsuppored attribute encountered: neither numeric nor nominal """
+    """ Unsupported attribute encountered: neither numeric nor nominal """
 
 
 class AttributeValueException(Exception):
