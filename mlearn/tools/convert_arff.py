@@ -54,6 +54,9 @@ class ArffParser(object):
         if tokens[0].lower() != '@relation':
             raise UnexpectedTokenException(tokens[0] + ', in line: ' + line)
         relation = tokens[1]
+        if not ((relation[0] == "'" and relation[-1] == "'") or
+                (relation[0] == '"' and relation[-1] == '"')):
+            relation = "'" + relation + "'"
         line = 'relation = ' + relation + '\n'
         self.output += line
         self.expecting = ArffParser.ATTRIBUTE
