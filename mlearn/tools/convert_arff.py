@@ -96,7 +96,7 @@ class ArffParser(object):
         row = []
         values = line.split(',')
         if len(values) == len(self.attributes):
-            for value, attribute in zip(values, self.attributes):
+            for value, attribute in zip(values, self.values):
                 value = value.strip()
                 if attribute == []:
                     try:
