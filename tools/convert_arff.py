@@ -24,8 +24,8 @@ class ArffParser(object):
     def __init__(self):
         self.expecting = ArffParser.RELATION
         self.output = ''
-        self.attributes = 'attributes = ('
-        self.values = 'values = ('
+        self.attributes = []
+        self.values = []
 
     def handle_comment(self, line):
         line = '#' + line[1:]
@@ -36,7 +36,6 @@ class ArffParser(object):
         if tokens[0].lower() != '@relation':
             raise UnexpectedTokenException(tokens[0] + ', in line: ' + line)
         relation = tokens[1]
-        relation = self.add_quotes(relation)
         line = 'relation = ' + relation + '\n'
         self.output += line
         self.expecting = ArffParser.ATTRIBUTE
@@ -45,32 +44,24 @@ class ArffParser(object):
         tokens = line.split()
         if tokens[0].lower() != '@attribute':
             if tokens[0].lower() == '@data':
-                self.attributes = self.attributes[:-2] + ')\n'
-                self.output += self.attributes
-                self.values += ')\n'
-                self.output += self.values
+                self.output += 'attributes = ' + str(self.attributes) + '\n'
+                self.output += 'values = ' + str(self.values) + '\n'
                 self.expecting = ArffParser.DATA 
                 return
             else:
                 raise UnexpectedTokenException(tokens[0] + ', in line: ' + line)
         name = tokens[1]
-        name = self.add_quotes(name)
-        self.attributes += name
-        self.attributes += ', '
+        self.attributes.append(name)
         value = tokens[2]
         if value in ('numeric', 'REAL'):
-            self.values += '(), '
+            self.values.append([])
         elif value.startswith('{'):
-            self.values += '('
+            value_list = []
             values = re.findall(ArffParser.PATTERN, line)[0].split(',') 
             for i in range(len(values)):
                 value = values[i].strip()
-                value = self.add_quotes(value)
-                self.values += value
-                if i < len(values) - 1:
-                    self.values += ', '
-                else:
-                    self.values += ')'
+                value_list.append(value)
+            self.values.append(value_list)
         else:
             raise UnexpectedTokenException(tokens[0] + ', in line: ' + line)
 
