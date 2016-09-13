@@ -65,13 +65,6 @@ class ArffParser(object):
         else:
             raise UnexpectedTokenException(tokens[0] + ', in line: ' + line)
 
-    def add_quotes(self, token):
-        """ If token's not already surrounded by quotation marks, add them. """
-        if not ((token[0] == "'" and token[-1] == "'") or 
-                (token[0] == '"' and token[-1] == '"')):
-            token = "'" + token + "'"
-        return token
-
     def convert_line(self, line):
         line = line.lstrip()
         if line == '':
