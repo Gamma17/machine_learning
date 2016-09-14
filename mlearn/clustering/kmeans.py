@@ -1,19 +1,22 @@
 import importlib
 import random
-
+import sys
+import math
 
 class Distance(object):
     """ Measure distance between objects (instance, clusters) """
 
     @classmethod
-    def euclidean(x, y):
+    def euclidean(self, x, y):
         """ Euclidean distance between x and y """
-        pass
+        
+        return math.sqrt(self.sq_euclidean(x, y))
 
     @classmethod
-    def sq_euclidean(x, y):
+    def sq_euclidean(self, x, y):
         """ SquaredEuclidean distance between x and y """
-        pass
+
+        return sum([(yn - xn) ** 2 for xn, yn in zip(x, y)])
 
 class Kmeans(object):
     """ Implements the k-means clustering algorithm """
@@ -22,10 +25,9 @@ class Kmeans(object):
         self.data_module = data_module
         self.k = k
         self.max_iterations = max_iterations
-        self.values = []
         self.instances = []
         self.clusters = []
-        self.nattributes = 0
+
 
     def init_clusters(self, data):
         """ Randomly assign objects to k clusters """
@@ -43,18 +45,16 @@ class Kmeans(object):
 
     def update_means(self):
         """ Compute and update the cluster means """
-        for cluster in self.clusters:
-            cluster.mean = [0] * self.nattributes 
+        
+        nvalues  = len(self.instances[0].data)
+        means = [[0] * nvalues for c in self.clusters]
+        counts = [0] * len(self.clusters) 
         for instance in self.instances:
             cluster = instance.cluster
-            index = 0
-
-            # ignore nominal attributes during update
-            for att, val in zip(self.values, instance.data):
-                if att == []:
-                    print 'updating value...', val
-                    self.clusters[cluster].mean[index] += val
-                    index += 1
+            counts[cluster] += 1
+            means[cluster] = [x + y for x, y in zip(means[cluster], instance.data)]
+        for i in range(len(self.clusters)):
+            self.clusters[i].mean = [x / y for x, y in zip(means[i], [counts[i]] * nvalues)]
 
     def run(self):
         """
@@ -64,14 +64,7 @@ class Kmeans(object):
         
         # Load data
         mod = importlib.import_module(self.data_module)
-        relation = getattr(mod, 'relation')
-        self.values = getattr(mod, 'values')
         data = getattr(mod, 'data')
-
-        # Count number of numeric attributes, ignore nominal attributes.
-        for attribute in self.values:
-            if attribute == []:
-                self.nattributes += 1
 
         # Initialize clusters
         self.init_clusters(data)
@@ -79,10 +72,26 @@ class Kmeans(object):
         iteration = 1
         while iteration <= self.max_iterations:
             changed = False
-            # if no changes occurred, finish iterations
+            for instance in self.instances:
+                closest_cluster = instance.cluster
+                shortest_distance = sys.maxint
+                index = 0
+                for cluster in self.clusters:
+                    distance = Distance.euclidean(instance.data, cluster.mean)
+                    if distance < shortest_distance:
+                        shortest_distance = distance
+                        closest_cluster = index
+                    index += 1
+                if instance.cluster != closest_cluster:
+                    instance.cluster = closest_cluster
+                    changed = True
+            if changed:
+                iteration += 1
+                self.update_means()
+            else:
+                break
 
-            iteration += 1
-
+        print 'Stopped after', iteration, 'iterations'
         print 'CLUSTERS:'
         for cluster in self.clusters:
             print cluster
@@ -105,7 +114,7 @@ class ClusteredInstance(object):
 
     def __init__(self, name, data, cluster):
         self.name = name
-        self.data = data  # may include nominal data!
+        self.data = data
         self.cluster = cluster
 
     def __str__(self):

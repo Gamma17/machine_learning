@@ -27,7 +27,7 @@ class Filter(object):
             for row in data:
                 del row[index]
 
-        result = 'relation = ' + relation + '\n'
+        result = "relation = '" + relation + "'\n"
         result += 'attributes  = ' + str(attributes) + '\n'
         result += 'values  = ' + str(values) + '\n'
         result += 'data  = ' + str(pprint.pformat(data)) + '\n'
