@@ -43,6 +43,11 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 
+### Example:
+```
+python convert_arff.py arff/iris.arff
+```
+
 ## Removing attributes from modules
 During development, I needed a way to remove attributes from generated modules. For example, I wanted to remove nominal attributes. So, another script:
 ```
@@ -64,4 +69,9 @@ optional arguments:
 ### Example:
 ```
 python exclude_attributes.py mlearn.data.iris iris_numeric class
+```
+
+## Run tests
+```
+python -m unittest discover
 ```
