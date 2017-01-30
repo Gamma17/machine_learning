@@ -20,7 +20,7 @@ optional arguments:
 
 ### Example:
 ```
-python run_kmeans.py mlearn.data.iris 3 100
+python run_kmeans.py mlearn.data.iris_numeric 3 100
 ```
 
 ## Running the ARFF-to-Python converter

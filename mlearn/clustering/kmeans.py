@@ -56,6 +56,19 @@ class Kmeans(object):
         for i in range(len(self.clusters)):
             self.clusters[i].mean = [x / y for x, y in zip(means[i], [counts[i]] * nvalues)]
 
+    def closest_cluster(self, instance):
+        """ Returns the closest cluster to an instance """
+        closest_cluster = instance.cluster
+        shortest_distance = sys.maxint
+        index = 0
+        for cluster in self.clusters:
+            distance = Distance.euclidean(instance.data, cluster.mean)
+            if distance < shortest_distance:
+                shortest_distance = distance
+                closest_cluster = index
+            index += 1
+        return closest_cluster
+
     def run(self):
         """
         Run k-means: load data and iterate until no changes occur
@@ -73,15 +86,7 @@ class Kmeans(object):
         while iteration <= self.max_iterations:
             changed = False
             for instance in self.instances:
-                closest_cluster = instance.cluster
-                shortest_distance = sys.maxint
-                index = 0
-                for cluster in self.clusters:
-                    distance = Distance.euclidean(instance.data, cluster.mean)
-                    if distance < shortest_distance:
-                        shortest_distance = distance
-                        closest_cluster = index
-                    index += 1
+                closest_cluster = self.closest_cluster(instance)
                 if instance.cluster != closest_cluster:
                     instance.cluster = closest_cluster
                     changed = True
