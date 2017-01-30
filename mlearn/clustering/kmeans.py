@@ -45,16 +45,28 @@ class Kmeans(object):
 
     def update_means(self):
         """ Compute and update the cluster means """
-        
+       
+        # number of attributes in each instance
         nvalues  = len(self.instances[0].data)
+
+        # init cluster means to 0 for all attributes
         means = [[0] * nvalues for c in self.clusters]
-        counts = [0] * len(self.clusters) 
+
+        # for tracking counts of instances in each cluster
+        counts = [0] * len(self.clusters)
+
         for instance in self.instances:
             cluster = instance.cluster
             counts[cluster] += 1
+
+            # update means of each cluster
             means[cluster] = [x + y for x, y in zip(means[cluster], instance.data)]
+
         for i in range(len(self.clusters)):
-            self.clusters[i].mean = [x / y for x, y in zip(means[i], [counts[i]] * nvalues)]
+            # divide the means of each cluster through by the number of instances in the cluster
+            # if there are no instances in a cluster, then division by zero could occur, so we check for this
+            if counts[i] > 0:
+                self.clusters[i].mean = [x / y for x, y in zip(means[i], [counts[i]] * nvalues)]
 
     def closest_cluster(self, instance):
         """ Returns the closest cluster to an instance """
