@@ -7,6 +7,8 @@ Since Python is a dynamic language, I decided to represent the data directly in 
 ```
 usage: python run_kmeans.py [-h] module k max_iterations
 
+Run k-means clustering
+
 positional arguments:
   module          data module
   k               number of clusters
