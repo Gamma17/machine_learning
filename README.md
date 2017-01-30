@@ -18,8 +18,19 @@ optional arguments:
   -h, --help      show this help message and exit
 ```
 
+### Example:
+```
+python run_kmeans.py mlearn.data.iris 3 100
+```
+
 ## Running the ARFF-to-Python converter
 As a convenient starting point, I used the [Weka] (http://www.cs.waikato.ac.nz/ml/weka/index.html "Weka") ARFF iris data and converted it to a module. 
+
+* See http://weka.wikispaces.com/ARFF+%28book+version%29
+* Designed to work with the ARFF files distributed with Weka version 3.6.14.
+* Supports only numeric and nominal attributes; string, date and relation-valued attributes are not supported.
+* It doesn't support missing values, represented in ARFF files by '?'.
+
 ```
 usage: convert_arff.py [-h] file
 
@@ -48,4 +59,9 @@ positional arguments:
 
 optional arguments:
   -h, --help          show this help message and exit
+```
+
+### Example:
+```
+python exclude_attributes.py mlearn.data.iris iris_numeric class
 ```
