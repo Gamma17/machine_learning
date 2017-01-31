@@ -21,36 +21,35 @@ class Distance(object):
 class Kmeans(object):
     """ Implements the k-means clustering algorithm """
     
-    def __init__(self, data, k):
+    def __init__(self, data):
         self.data = data
-        self.k = k
         self.instances = []
         self.clusters = []
 
-    def init_clusters(self):
+    def init_clusters(self, k):
         """ Randomly assign objects to k clusters """
 
         # TODO If a cluster has never had an instance, it could have no mean, just [],
         # should have zero mean. Fix!
-        for i in range(self.k):
+        for i in range(k):
             self.clusters.append(Cluster(i))
 
         instance_id = 0
         for instance in self.data:
-            ncluster = random.randint(0, self.k - 1)
+            ncluster = random.randint(0, k - 1)
             cinstance = ClusteredInstance(instance_id, instance, ncluster)
             self.instances.append(cinstance)
             instance_id += 1
-        self.update_means()
+        self.update_means(k)
 
     def cluster_mean(self, instances_data_list):
         return sum(instances_data_list) / len(instances_data_list)
 
-    def update_means(self):
+    def update_means(self, k):
         """ Compute and update the cluster means """
 
         cluster_instances = []
-        for i in range(self.k):
+        for i in range(k):
             cluster_instances.append([])
 
         for instance in self.instances:
@@ -59,9 +58,9 @@ class Kmeans(object):
 
         # TODO If a cluster has never had an instance, it could have no mean, just [],
         # should have zero mean. Fix!
-        for i in range(self.k):
+        for i in range(k):
             if len(cluster_instances[i]) == 0:
-                self.clusters[i].mean = [0] * self.k # TODO have a look at this, as zero is not right!
+                self.clusters[i].mean = [0] * k # TODO have a look at this, as zero is not right!
             else:
                 self.clusters[i].mean = map(self.cluster_mean, zip(*(cluster_instances[i])))
 
@@ -79,14 +78,14 @@ class Kmeans(object):
             index += 1
         return closest_cluster
 
-    def run(self, max_iterations):
+    def run(self, k, max_iterations):
         """
         Run k-means: load data and iterate until no changes occur
         or maximum iterations reached.
         """
         
         # Initialize clusters
-        self.init_clusters()
+        self.init_clusters(k)
 
         iteration = 1
         while iteration <= max_iterations:
@@ -98,7 +97,7 @@ class Kmeans(object):
                     changed = True
             if changed:
                 iteration += 1
-                self.update_means()
+                self.update_means(k)
             else:
                 break
 
