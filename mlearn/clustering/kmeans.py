@@ -1,3 +1,4 @@
+from __future__ import division
 import random
 import sys
 import math
@@ -27,7 +28,6 @@ class Kmeans(object):
         self.instances = []
         self.clusters = []
 
-
     def init_clusters(self):
         """ Randomly assign objects to k clusters """
 
@@ -42,30 +42,25 @@ class Kmeans(object):
             instance_id += 1
         self.update_means()
 
+    def cluster_mean(self, instances_data_list):
+        return sum(instances_data_list) / len(instances_data_list)
+
     def update_means(self):
         """ Compute and update the cluster means """
-       
-        # number of attributes in each instance
-        nvalues  = len(self.instances[0].data)
 
-        # init cluster means to 0 for all attributes
-        means = [[0] * nvalues for c in self.clusters]
-
-        # for tracking counts of instances in each cluster
-        counts = [0] * self.k
+        cluster_instances = []
+        for i in range(self.k):
+            cluster_instances.append([])
 
         for instance in self.instances:
             cluster = instance.cluster
-            counts[cluster] += 1
+            cluster_instances[cluster].append(instance.data)
 
-            # update means of each cluster
-            means[cluster] = [x + y for x, y in zip(means[cluster], instance.data)]
-
-        for i in range(len(self.clusters)):
-            # divide the means of each cluster through by the number of instances in the cluster
-            # if there are no instances in a cluster, then division by zero could occur, so we check for this
-            if counts[i] > 0:
-                self.clusters[i].mean = [x / y for x, y in zip(means[i], [counts[i]] * nvalues)]
+        for i in range(self.k):
+            if len(cluster_instances[i]) == 0:
+                self.clusters[i].mean = [0] * self.k # TODO have a look at this, as zero is not right!
+            else:
+                self.clusters[i].mean = map(self.cluster_mean, zip(*(cluster_instances[i])))
 
     def closest_cluster(self, instance):
         """ Returns the closest cluster to the instance """
