@@ -1,4 +1,3 @@
-import importlib
 import random
 import sys
 import math
@@ -21,8 +20,8 @@ class Distance(object):
 class Kmeans(object):
     """ Implements the k-means clustering algorithm """
     
-    def __init__(self, data_module, k, max_iterations):
-        self.data_module = data_module
+    def __init__(self, data, k, max_iterations):
+        self.data = data
         self.k = k
         self.max_iterations = max_iterations
         self.instances = []
@@ -69,7 +68,8 @@ class Kmeans(object):
                 self.clusters[i].mean = [x / y for x, y in zip(means[i], [counts[i]] * nvalues)]
 
     def closest_cluster(self, instance):
-        """ Returns the closest cluster to an instance """
+        """ Returns the closest cluster to the instance """
+
         closest_cluster = instance.cluster
         shortest_distance = sys.maxint
         index = 0
@@ -87,12 +87,8 @@ class Kmeans(object):
         or maximum iterations reached.
         """
         
-        # Load data
-        mod = importlib.import_module(self.data_module)
-        data = getattr(mod, 'data')
-
         # Initialize clusters
-        self.init_clusters(data)
+        self.init_clusters(self.data)
 
         iteration = 1
         while iteration <= self.max_iterations:
