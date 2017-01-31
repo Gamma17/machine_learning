@@ -28,14 +28,14 @@ class Kmeans(object):
         self.clusters = []
 
 
-    def init_clusters(self, data):
+    def init_clusters(self):
         """ Randomly assign objects to k clusters """
 
         for i in range(self.k):
             self.clusters.append(Cluster(i))
 
         instance_id = 0
-        for instance in data:
+        for instance in self.data:
             ncluster = random.randint(0, self.k - 1)
             cinstance = ClusteredInstance(instance_id, instance, ncluster)
             self.instances.append(cinstance)
@@ -52,7 +52,7 @@ class Kmeans(object):
         means = [[0] * nvalues for c in self.clusters]
 
         # for tracking counts of instances in each cluster
-        counts = [0] * len(self.clusters)
+        counts = [0] * self.k
 
         for instance in self.instances:
             cluster = instance.cluster
@@ -88,7 +88,7 @@ class Kmeans(object):
         """
         
         # Initialize clusters
-        self.init_clusters(self.data)
+        self.init_clusters()
 
         iteration = 1
         while iteration <= self.max_iterations:
@@ -103,14 +103,6 @@ class Kmeans(object):
                 self.update_means()
             else:
                 break
-
-        print 'Stopped after', iteration, 'iterations'
-        print 'CLUSTERS:'
-        for cluster in self.clusters:
-            print cluster
-        print 'INSTANCES:'
-        for instance in self.instances:
-            print instance
 
 class Cluster(object):
     """ A cluster with centre equal to the mean of its members """
