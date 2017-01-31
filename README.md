@@ -72,6 +72,13 @@ python exclude_attributes.py mlearn.data.iris iris_numeric class
 ```
 
 ## Run tests
+### To run all available tests:
 ```
 python -m unittest discover
+```
+### To run individual suites:
+```
+python -m unittest test.test_kmeans
+python -m unittest test.test_convert_arff
+python -m unittest test.test_filter
 ```

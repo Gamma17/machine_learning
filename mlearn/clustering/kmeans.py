@@ -31,6 +31,8 @@ class Kmeans(object):
     def init_clusters(self):
         """ Randomly assign objects to k clusters """
 
+        # TODO If a cluster has never had an instance, it could have no mean, just [],
+        # should have zero mean. Fix!
         for i in range(self.k):
             self.clusters.append(Cluster(i))
 
@@ -56,6 +58,8 @@ class Kmeans(object):
             cluster = instance.cluster
             cluster_instances[cluster].append(instance.data)
 
+        # TODO If a cluster has never had an instance, it could have no mean, just [],
+        # should have zero mean. Fix!
         for i in range(self.k):
             if len(cluster_instances[i]) == 0:
                 self.clusters[i].mean = [0] * self.k # TODO have a look at this, as zero is not right!
