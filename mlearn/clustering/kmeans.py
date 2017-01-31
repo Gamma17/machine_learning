@@ -22,24 +22,18 @@ class Kmeans(object):
     """ Implements the k-means clustering algorithm """
     
     def __init__(self, data):
-        self.data = data
-        self.instances = []
-        self.clusters = []
+        self.instances = [ClusteredInstance(i, data[i], None) for i in range(len(data))]
 
     def init_clusters(self, k):
         """ Randomly assign objects to k clusters """
 
         # TODO If a cluster has never had an instance, it could have no mean, just [],
         # should have zero mean. Fix!
-        for i in range(k):
-            self.clusters.append(Cluster(i))
+        self.clusters = [Cluster(i) for i in range(k)]
 
-        instance_id = 0
-        for instance in self.data:
+        for instance in self.instances:
             ncluster = random.randint(0, k - 1)
-            cinstance = ClusteredInstance(instance_id, instance, ncluster)
-            self.instances.append(cinstance)
-            instance_id += 1
+            instance.cluster = ncluster
         self.update_means(k)
 
     def cluster_mean(self, instances_data_list):
