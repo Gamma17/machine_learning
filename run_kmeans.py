@@ -15,8 +15,8 @@ if __name__ == '__main__':
     mod = importlib.import_module(args.module)
     data = getattr(mod, 'data')
 
-    kmeans = kmeans.Kmeans(data, args.k, args.max_iterations)
-    kmeans.run()
+    kmeans = kmeans.Kmeans(data, args.k)
+    kmeans.run(args.max_iterations)
 
     print 'CLUSTERS:'
     for cluster in kmeans.clusters:

@@ -5,7 +5,7 @@ class ConverterTestCase(unittest.TestCase):
 
     def test_cluster_mean(self):
         data = [1.1, 4.2, 3.7]
-        km = kmeans.Kmeans(data, 2, 1)
+        km = kmeans.Kmeans(data, 2)
         expected = 3.0
         actual = km.cluster_mean(data)
         self.assertEqual(actual, expected, msg='Expected %f, got %f' % (expected, actual))
@@ -30,7 +30,7 @@ class ConverterTestCase(unittest.TestCase):
         clust02 = kmeans.Cluster(2)
         clust03 = kmeans.Cluster(3)
 
-        km = kmeans.Kmeans(data, 3, 1)
+        km = kmeans.Kmeans(data, 3)
         km.instances = [inst00, inst01, inst02, inst03, inst04, inst05]
         km.clusters = [clust00, clust01, clust02, clust03]
         km.update_means()

@@ -21,10 +21,9 @@ class Distance(object):
 class Kmeans(object):
     """ Implements the k-means clustering algorithm """
     
-    def __init__(self, data, k, max_iterations):
+    def __init__(self, data, k):
         self.data = data
         self.k = k
-        self.max_iterations = max_iterations
         self.instances = []
         self.clusters = []
 
@@ -80,7 +79,7 @@ class Kmeans(object):
             index += 1
         return closest_cluster
 
-    def run(self):
+    def run(self, max_iterations):
         """
         Run k-means: load data and iterate until no changes occur
         or maximum iterations reached.
@@ -90,7 +89,7 @@ class Kmeans(object):
         self.init_clusters()
 
         iteration = 1
-        while iteration <= self.max_iterations:
+        while iteration <= max_iterations:
             changed = False
             for instance in self.instances:
                 closest_cluster = self.closest_cluster(instance)
