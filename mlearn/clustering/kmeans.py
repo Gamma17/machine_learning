@@ -27,14 +27,11 @@ class Kmeans(object):
     def init_clusters(self, k):
         """ Randomly assign objects to k clusters """
 
-        # TODO If a cluster has never had an instance, it could have no mean, just [],
-        # should have zero mean. Fix!
         dim = len(self.instances[0].data)
         self.clusters = [Cluster(i, dim) for i in range(k)]
 
         for instance in self.instances:
-            ncluster = random.randint(0, k - 1)
-            instance.cluster = self.clusters[ncluster]
+            instance.cluster = random.choice(self.clusters)
         self.update_means(k)
 
     def mean(self, data):
