@@ -31,7 +31,9 @@ class Kmeans(object):
         self.clusters = [Cluster(i, dim) for i in range(k)]
 
         for instance in self.instances:
-            instance.cluster = random.choice(self.clusters)
+            cluster = random.choice(self.clusters) 
+            instance.cluster = cluster
+            cluster.append(instance)
         self.update_means(k)
 
     def mean(self, data):
@@ -40,19 +42,12 @@ class Kmeans(object):
     def update_means(self, k):
         """ Compute and update the cluster means """
 
-        cluster_instances = {c: [] for c in self.clusters}
-
-        for instance in self.instances:
-            cluster = instance.cluster
-            cluster_instances[cluster].append(instance)
-
-        for clust, insts in cluster_instances.iteritems():
-            if len(insts) == 0:
+        for cluster in self.clusters:
+            if len(cluster) == 0:
                 dim = len(self.instances[0])
-                clust.mean = [0] * dim # TODO have a closer look at this!
+                cluster.mean = [0] * dim # TODO have a closer look at this!
             else:
-                data = [instance for instance in insts]
-                clust.mean =  map(self.mean, zip(*(data)))
+                cluster.mean =  map(self.mean, zip(*(cluster)))
 
     def closest_cluster(self, instance):
         """ Returns the closest cluster to the instance """
@@ -81,6 +76,8 @@ class Kmeans(object):
             for instance in self.instances:
                 closest_cluster = self.closest_cluster(instance)
                 if instance.cluster != closest_cluster:
+                    instance.cluster.remove(instance)
+                    closest_cluster.append(instance) 
                     instance.cluster = closest_cluster
                     changed = True
             if changed:
@@ -89,7 +86,7 @@ class Kmeans(object):
             else:
                 break
 
-class Cluster(object):
+class Cluster(list):
     """ A cluster with centre equal to the mean of its members """
 
     def __init__(self, name, dim):

@@ -31,6 +31,13 @@ class ConverterTestCase(unittest.TestCase):
         inst04 = kmeans.Instance(4, data[4], clust02)
         inst05 = kmeans.Instance(5, data[5], clust02)
 
+        clust00.append(inst00)
+        clust01.append(inst01)
+        clust01.append(inst02)
+        clust02.append(inst03)
+        clust02.append(inst04)
+        clust02.append(inst05)
+
         km = kmeans.Kmeans(data)
         km.instances = [inst00, inst01, inst02, inst03, inst04, inst05]
         km.clusters = [clust00, clust01, clust02]
