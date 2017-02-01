@@ -25,12 +25,12 @@ class ConverterTestCase(unittest.TestCase):
         clust02 = kmeans.Cluster(2, dim)
         clust03 = kmeans.Cluster(3, dim)
 
-        inst00 = kmeans.ClusteredInstance(0, data[0], clust00)
-        inst01 = kmeans.ClusteredInstance(1, data[1], clust01)
-        inst02 = kmeans.ClusteredInstance(2, data[2], clust01)
-        inst03 = kmeans.ClusteredInstance(3, data[3], clust02)
-        inst04 = kmeans.ClusteredInstance(4, data[4], clust02)
-        inst05 = kmeans.ClusteredInstance(5, data[5], clust02)
+        inst00 = kmeans.Instance(0, data[0], clust00)
+        inst01 = kmeans.Instance(1, data[1], clust01)
+        inst02 = kmeans.Instance(2, data[2], clust01)
+        inst03 = kmeans.Instance(3, data[3], clust02)
+        inst04 = kmeans.Instance(4, data[4], clust02)
+        inst05 = kmeans.Instance(5, data[5], clust02)
 
         km = kmeans.Kmeans(data)
         km.instances = [inst00, inst01, inst02, inst03, inst04, inst05]
