@@ -11,6 +11,7 @@ class Filter(object):
 
         # Load data
         mod = importlib.import_module(self.data_module)
+        doc = mod.__doc__
         relation  = getattr(mod, 'relation')
         attributes = getattr(mod, 'attributes')
         values = getattr(mod, 'values')
@@ -27,7 +28,8 @@ class Filter(object):
             for row in data:
                 del row[index]
 
-        result = "relation = '" + relation + "'\n"
+        result = '"""' + doc + '"""\n'
+        result += "relation = '" + relation + "'\n"
         result += 'attributes  = ' + str(attributes) + '\n'
         result += 'values  = ' + str(values) + '\n'
         result += 'data  = ' + str(pprint.pformat(data)) + '\n'

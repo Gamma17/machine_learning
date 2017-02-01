@@ -17,21 +17,28 @@ class AttributeValueException(Exception):
 class ArffParser(object):
     """ Parses ARFF files, performs data validation, writes python output """
 
-    RELATION, ATTRIBUTE, DATA, DATA_WRITTEN = range(4)
+    PREAMBLE, RELATION, ATTRIBUTE, DATA, DATA_WRITTEN = range(5)
     PATTERN = r'\{(.*)\}'  # for matching attribute values
 
     def __init__(self):
-        self.expecting = ArffParser.RELATION
+        #self.expecting = ArffParser.RELATION
+        self.expecting = ArffParser.PREAMBLE
         self.output = ''
         self.attributes = []
         self.values = []
         self.data = []
+        self.docstring = '"""\n'
 
     def handle_comment(self, line):
-        """ Replace % with # """
+        """ Include comments in docstring """
 
-        line = '#' + line[1:]
-        self.output += line
+        if line[0] == '%':
+            self.docstring += line[1:]
+        else:
+            self.output += self.docstring
+            self.output += '"""\n'
+            self.expecting = ArffParser.RELATION
+            self.handle_relation(line)
 
     def handle_relation(self, line):
         """ Declare relation name """
@@ -94,8 +101,9 @@ class ArffParser(object):
                     row.append(value)
             self.data.append(row)
         else:
-            raise AttributeValueException(
-                    'Wrong number on values on line: ', + line)
+            if line[0] != '%':
+                raise AttributeValueException(
+                        'Wrong number on values on line: ' + line)
 
     def output_data(self):
         """ Write the data rows into the output """
@@ -111,8 +119,7 @@ class ArffParser(object):
         if line == '':
             self.output_data()
             return
-        if line[0] == '%':
-            self.output_data()
+        if self.expecting == ArffParser.PREAMBLE:
             self.handle_comment(line)
         elif self.expecting == ArffParser.RELATION:
             self.handle_relation(line)
