@@ -29,47 +29,44 @@ class Kmeans(object):
 
         # TODO If a cluster has never had an instance, it could have no mean, just [],
         # should have zero mean. Fix!
-        self.clusters = [Cluster(i) for i in range(k)]
+        dim = len(self.instances[0].data)
+        self.clusters = [Cluster(i, dim) for i in range(k)]
 
         for instance in self.instances:
             ncluster = random.randint(0, k - 1)
-            instance.cluster = ncluster
+            instance.cluster = self.clusters[ncluster]
         self.update_means(k)
 
-    def cluster_mean(self, instances_data_list):
-        return sum(instances_data_list) / len(instances_data_list)
+    def mean(self, data):
+        return sum(data) / len(data)
 
     def update_means(self, k):
         """ Compute and update the cluster means """
 
-        cluster_instances = []
-        for i in range(k):
-            cluster_instances.append([])
+        cluster_instances = {c: [] for c in self.clusters}
 
         for instance in self.instances:
             cluster = instance.cluster
-            cluster_instances[cluster].append(instance.data)
+            cluster_instances[cluster].append(instance)
 
-        # TODO If a cluster has never had an instance, it could have no mean, just [],
-        # should have zero mean. Fix!
-        for i in range(k):
-            if len(cluster_instances[i]) == 0:
-                self.clusters[i].mean = [0] * k # TODO have a look at this, as zero is not right!
+        for clust, insts in cluster_instances.iteritems():
+            if len(insts) == 0:
+                dim = len(self.instances[0].data)
+                clust.mean = [0] * dim # TODO have a closer look at this!
             else:
-                self.clusters[i].mean = map(self.cluster_mean, zip(*(cluster_instances[i])))
+                data = [instance.data for instance in insts]
+                clust.mean =  map(self.mean, zip(*(data)))
 
     def closest_cluster(self, instance):
         """ Returns the closest cluster to the instance """
 
         closest_cluster = instance.cluster
         shortest_distance = sys.maxint
-        index = 0
         for cluster in self.clusters:
             distance = Distance.euclidean(instance.data, cluster.mean)
             if distance < shortest_distance:
                 shortest_distance = distance
-                closest_cluster = index
-            index += 1
+                closest_cluster = cluster
         return closest_cluster
 
     def run(self, k, max_iterations):
@@ -98,9 +95,9 @@ class Kmeans(object):
 class Cluster(object):
     """ A cluster with centre equal to the mean of its members """
 
-    def __init__(self, name):
+    def __init__(self, name, dim):
         self.name = name
-        self.mean = []
+        self.mean = [0] * dim
 
     def __str__(self):
         return str(self.name) + '::' + str(self.mean)
@@ -114,5 +111,5 @@ class ClusteredInstance(object):
         self.cluster = cluster
 
     def __str__(self):
-        return str(self.name) + '::' + str(self.data) + '::' + str(self.cluster)
+        return str(self.name) + '::' + str(self.data) + '::' + str(self.cluster.name)
 

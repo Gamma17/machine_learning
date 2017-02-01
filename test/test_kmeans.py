@@ -7,7 +7,7 @@ class ConverterTestCase(unittest.TestCase):
         data = [1.1, 4.2, 3.7]
         km = kmeans.Kmeans(data)
         expected = 3.0
-        actual = km.cluster_mean(data)
+        actual = km.mean(data)
         self.assertEqual(actual, expected, msg='Expected %f, got %f' % (expected, actual))
 
     def test_update_means(self):
@@ -17,20 +17,21 @@ class ConverterTestCase(unittest.TestCase):
                 [7.1, 8.2, 3.0],
                 [0.2, 0.9, 1.7],
                 [8.8, 11.2, 4.6]]
-
-        inst00 = kmeans.ClusteredInstance(0, data[0], 0)
-        inst01 = kmeans.ClusteredInstance(1, data[1], 1)
-        inst02 = kmeans.ClusteredInstance(2, data[2], 1)
-        inst03 = kmeans.ClusteredInstance(3, data[3], 2)
-        inst04 = kmeans.ClusteredInstance(4, data[4], 2)
-        inst05 = kmeans.ClusteredInstance(5, data[5], 2)
-
-        clust00 = kmeans.Cluster(0)
-        clust01 = kmeans.Cluster(1)
-        clust02 = kmeans.Cluster(2)
-        clust03 = kmeans.Cluster(3)
-
         k = 3
+        dim = 3
+
+        clust00 = kmeans.Cluster(0, dim)
+        clust01 = kmeans.Cluster(1, dim)
+        clust02 = kmeans.Cluster(2, dim)
+        clust03 = kmeans.Cluster(3, dim)
+
+        inst00 = kmeans.ClusteredInstance(0, data[0], clust00)
+        inst01 = kmeans.ClusteredInstance(1, data[1], clust01)
+        inst02 = kmeans.ClusteredInstance(2, data[2], clust01)
+        inst03 = kmeans.ClusteredInstance(3, data[3], clust02)
+        inst04 = kmeans.ClusteredInstance(4, data[4], clust02)
+        inst05 = kmeans.ClusteredInstance(5, data[5], clust02)
+
         km = kmeans.Kmeans(data)
         km.instances = [inst00, inst01, inst02, inst03, inst04, inst05]
         km.clusters = [clust00, clust01, clust02, clust03]

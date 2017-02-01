@@ -18,10 +18,10 @@ if __name__ == '__main__':
     kmeans = kmeans.Kmeans(data)
     kmeans.run(args.k, args.max_iterations)
 
-    print 'CLUSTERS:'
-    for cluster in kmeans.clusters:
-        print cluster
     print 'INSTANCES:'
     for instance in kmeans.instances:
         print instance
+    print 'CLUSTERS:'
+    for cluster in kmeans.clusters:
+        print cluster
 
