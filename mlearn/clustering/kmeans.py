@@ -27,7 +27,7 @@ class Kmeans(object):
     def init_clusters(self, k):
         """ Randomly assign objects to k clusters """
 
-        dim = len(self.instances[0].data)
+        dim = len(self.instances[0])
         self.clusters = [Cluster(i, dim) for i in range(k)]
 
         for instance in self.instances:
@@ -48,10 +48,10 @@ class Kmeans(object):
 
         for clust, insts in cluster_instances.iteritems():
             if len(insts) == 0:
-                dim = len(self.instances[0].data)
+                dim = len(self.instances[0])
                 clust.mean = [0] * dim # TODO have a closer look at this!
             else:
-                data = [instance.data for instance in insts]
+                data = [instance for instance in insts]
                 clust.mean =  map(self.mean, zip(*(data)))
 
     def closest_cluster(self, instance):
@@ -60,7 +60,7 @@ class Kmeans(object):
         closest_cluster = instance.cluster
         shortest_distance = sys.maxint
         for cluster in self.clusters:
-            distance = Distance.euclidean(instance.data, cluster.mean)
+            distance = Distance.euclidean(instance, cluster.mean)
             if distance < shortest_distance:
                 shortest_distance = distance
                 closest_cluster = cluster
@@ -99,14 +99,14 @@ class Cluster(object):
     def __str__(self):
         return str(self.name) + '::' + str(self.mean)
 
-class Instance(object):
+class Instance(list):
     """ Instance assigned to a cluster """
 
     def __init__(self, name, data, cluster):
+        super(Instance, self).__init__(data)
         self.name = name
-        self.data = data
         self.cluster = cluster
 
     def __str__(self):
-        return str(self.name) + '::' + str(self.data) + '::' + str(self.cluster.name)
+        return str(self.name) + '::' + super(Instance, self).__str__() + '::' + str(self.cluster.name)
 

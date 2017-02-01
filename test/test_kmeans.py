@@ -4,10 +4,10 @@ from mlearn.clustering import kmeans
 class ConverterTestCase(unittest.TestCase):
 
     def test_cluster_mean(self):
-        data = [1.1, 4.2, 3.7]
+        data = [[1.1, 4.2, 3.7]]
         km = kmeans.Kmeans(data)
         expected = 3.0
-        actual = km.mean(data)
+        actual = km.mean(data[0])
         self.assertEqual(actual, expected, msg='Expected %f, got %f' % (expected, actual))
 
     def test_update_means(self):
