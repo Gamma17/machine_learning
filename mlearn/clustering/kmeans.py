@@ -66,14 +66,14 @@ class Kmeans(object):
                 closest_cluster = cluster
         return closest_cluster
 
-    def run(self, k, max_iterations):
+    def run(self, k, max_iterations, init=True):
         """
-        Run k-means: load data and iterate until no changes occur
-        or maximum iterations reached.
+        Find k clusters by iterating until no changes occur or maximum iterations reached.
+        You usually want init to be True, unless you're testing this method,
+        in which case you will want to assign the objects to clusters in a predetermined order.
         """
-        
-        # Initialize clusters
-        self.init_clusters(k)
+        if init: 
+            self.init_clusters(k)
 
         iteration = 1
         while iteration <= max_iterations:
