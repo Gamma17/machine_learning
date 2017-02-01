@@ -22,7 +22,7 @@ class Kmeans(object):
     """ Implements the k-means clustering algorithm """
     
     def __init__(self, data):
-        self.instances = [Instance(i, data[i], None) for i in range(len(data))]
+        self.instances = [Instance(i, data[i]) for i in range(len(data))]
 
     def init_clusters(self, k):
         """ Randomly assign objects to k clusters """
@@ -99,10 +99,10 @@ class Cluster(list):
 class Instance(list):
     """ Instance assigned to a cluster """
 
-    def __init__(self, name, data, cluster):
+    def __init__(self, name, data):
         super(Instance, self).__init__(data)
         self.name = name
-        self.cluster = cluster
+        self.cluster = None
 
     def __str__(self):
         return str(self.name) + '::' + super(Instance, self).__str__() + '::' + str(self.cluster.name)

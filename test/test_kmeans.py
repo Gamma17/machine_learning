@@ -24,12 +24,19 @@ class ConverterTestCase(unittest.TestCase):
         clust01 = kmeans.Cluster(1, dim)
         clust02 = kmeans.Cluster(2, dim)
 
-        inst00 = kmeans.Instance(0, data[0], clust00)
-        inst01 = kmeans.Instance(1, data[1], clust01)
-        inst02 = kmeans.Instance(2, data[2], clust01)
-        inst03 = kmeans.Instance(3, data[3], clust02)
-        inst04 = kmeans.Instance(4, data[4], clust02)
-        inst05 = kmeans.Instance(5, data[5], clust02)
+        inst00 = kmeans.Instance(0, data[0])
+        inst01 = kmeans.Instance(1, data[1])
+        inst02 = kmeans.Instance(2, data[2])
+        inst03 = kmeans.Instance(3, data[3])
+        inst04 = kmeans.Instance(4, data[4])
+        inst05 = kmeans.Instance(5, data[5])
+
+        inst00.cluster = clust00
+        inst01.cluster = clust01
+        inst02.cluster = clust01
+        inst03.cluster = clust02
+        inst04.cluster = clust02
+        inst05.cluster = clust02
 
         clust00.append(inst00)
         clust01.append(inst01)
@@ -72,12 +79,19 @@ class ConverterTestCase(unittest.TestCase):
         clust01 = kmeans.Cluster(1, dim)
         clust02 = kmeans.Cluster(2, dim)
 
-        inst00 = kmeans.Instance(0, data[0], clust00)
-        inst01 = kmeans.Instance(1, data[1], clust00)
-        inst02 = kmeans.Instance(2, data[2], clust01)
-        inst03 = kmeans.Instance(3, data[3], clust01)
-        inst04 = kmeans.Instance(4, data[4], clust01)
-        inst05 = kmeans.Instance(5, data[5], clust02)
+        inst00 = kmeans.Instance(0, data[0])
+        inst01 = kmeans.Instance(1, data[1])
+        inst02 = kmeans.Instance(2, data[2])
+        inst03 = kmeans.Instance(3, data[3])
+        inst04 = kmeans.Instance(4, data[4])
+        inst05 = kmeans.Instance(5, data[5])
+
+        inst00.cluster = clust00
+        inst01.cluster = clust00
+        inst02.cluster = clust01
+        inst03.cluster = clust01
+        inst04.cluster = clust01
+        inst05.cluster = clust02
 
         km = kmeans.Kmeans(data)
         km.instances = [inst00, inst01, inst02, inst03, inst04, inst05]
