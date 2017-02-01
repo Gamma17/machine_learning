@@ -24,11 +24,20 @@ class Kmeans(object):
     def __init__(self, data):
         self.instances = [Instance(i, data[i]) for i in range(len(data))]
 
+    def dim(self):
+        """
+        Returns the dimension of an instance.
+        Assumes all instances have the same dimension.
+        """
+
+        return len(self.instances[0])
+
     def init_clusters(self, k):
         """ Randomly assign objects to k clusters """
 
-        dim = len(self.instances[0])
-        self.clusters = [Cluster(i, dim) for i in range(k)]
+        self.clusters = [Cluster(i) for i in range(k)]
+        for cluster in self.clusters:
+            cluster.mean = [0] * self.dim()
 
         for instance in self.instances:
             cluster = random.choice(self.clusters) 
@@ -37,6 +46,8 @@ class Kmeans(object):
         self.update_means(k)
 
     def mean(self, data):
+        """ Returns the mean of a list of values """
+
         return sum(data) / len(data)
 
     def update_means(self, k):
@@ -44,8 +55,7 @@ class Kmeans(object):
 
         for cluster in self.clusters:
             if len(cluster) == 0:
-                dim = len(self.instances[0])
-                cluster.mean = [0] * dim # TODO have a closer look at this!
+                cluster.mean = [0] * self.dim()
             else:
                 cluster.mean =  map(self.mean, zip(*(cluster)))
 
@@ -67,6 +77,7 @@ class Kmeans(object):
         You usually want init to be True, unless you're testing this method,
         in which case you will want to assign the objects to clusters in a predetermined order.
         """
+
         if init: 
             self.init_clusters(k)
 
@@ -89,9 +100,8 @@ class Kmeans(object):
 class Cluster(list):
     """ A cluster with centre equal to the mean of its members """
 
-    def __init__(self, name, dim):
+    def __init__(self, name):
         self.name = name
-        self.mean = [0] * dim
 
     def __str__(self):
         return str(self.name) + '::' + str(self.mean)
@@ -102,7 +112,6 @@ class Instance(list):
     def __init__(self, name, data):
         super(Instance, self).__init__(data)
         self.name = name
-        self.cluster = None
 
     def __str__(self):
         return str(self.name) + '::' + super(Instance, self).__str__() + '::' + str(self.cluster.name)
