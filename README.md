@@ -1,5 +1,5 @@
 # Simple _k_-means
-An implementation of the simple _k_-means clustering algorithm in Python, with a couple of tools for converting [Weka] (http://www.cs.waikato.ac.nz/ml/weka/index.html "Weka") ARFF files to Python modules. 
+An implementation of [the simple _k_-means clustering algorithm] (https://en.wikipedia.org/wiki/K-means_clustering#Standard_algorithm "Wikipedia entry for the standard k-means algorithm") in Python, with a couple of tools for converting [Weka] (http://www.cs.waikato.ac.nz/ml/weka/index.html "Weka") ARFF files to Python modules. 
 
 Since Python is a dynamic language, I decided to represent the data directly in a Python module. An example is the module `mlearn.data.iris_numeric`.
 
@@ -28,7 +28,7 @@ python run_kmeans.py mlearn.data.iris_numeric 3 100
 ## Running the ARFF-to-Python converter
 As a convenient starting point, I used the [Weka] (http://www.cs.waikato.ac.nz/ml/weka/index.html "Weka") ARFF iris data and converted it to a module. 
 
-* See http://weka.wikispaces.com/ARFF+%28book+version%29
+* See [ARFF (book version)] (http://weka.wikispaces.com/ARFF+%28book+version%29 "ARFF (book version)")
 * Designed to work with the ARFF files distributed with Weka version 3.6.14.
 * Supports only numeric and nominal attributes; string, date and relation-valued attributes are not supported.
 * It doesn't support missing values, represented in ARFF files by '?'.
