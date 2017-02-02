@@ -5,7 +5,6 @@ import os
 class ConverterTestCase(unittest.TestCase):
 
     def file_lines(self, filename):
-        lines = None
         try:
             f = open(filename)
             lines = f.readlines()
