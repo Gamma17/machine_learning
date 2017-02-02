@@ -3,6 +3,8 @@ An implementation of the simple _k_-means clustering algorithm in Python, with a
 
 Since Python is a dynamic language, I decided to represent the data directly in a Python module. An example is the module `mlearn.data.iris_numeric`.
 
+__Note:__ this project is based on version 2.7.12 of Python on Linux.
+
 ## Running _k_-means
 ```
 usage: python run_kmeans.py [-h] module k max_iterations
