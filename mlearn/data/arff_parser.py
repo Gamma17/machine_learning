@@ -21,7 +21,6 @@ class ArffParser(object):
     PATTERN = r'\{(.*)\}'  # for matching attribute values
 
     def __init__(self):
-        #self.expecting = ArffParser.RELATION
         self.expecting = ArffParser.PREAMBLE
         self.output = ''
         self.attributes = []
