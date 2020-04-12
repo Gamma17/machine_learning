@@ -1,5 +1,5 @@
 # Simple _k_-means
-An implementation of [the simple _k_-means clustering algorithm] (https://en.wikipedia.org/wiki/K-means_clustering#Standard_algorithm "Wikipedia entry for the standard k-means algorithm") in Python, with a couple of tools for converting [Weka] (http://www.cs.waikato.ac.nz/ml/weka/index.html "Weka") ARFF files to Python modules. 
+An implementation of [the simple _k_-means clustering algorithm](https://en.wikipedia.org/wiki/K-means_clustering#Standard_algorithm "Wikipedia entry for the standard k-means algorithm") in Python, with a couple of tools for converting [Weka](http://www.cs.waikato.ac.nz/ml/weka/index.html "Weka") ARFF files to Python modules. 
 
 Since Python is a dynamic language, I decided to represent the data directly in a Python module. An example is the module `mlearn.data.iris_numeric`.
 
